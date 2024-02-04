@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
-import { useCallback, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-import { useMovieSearch } from '../../hooks/useMovieSearch';
+import {
+  MovieType,
+  isMovieType,
+  useMovieSearch,
+} from '../../hooks/useMovieSearch';
 import { Container } from '../MovieList/Container';
 import { MovieCard } from '../MovieCard';
+import { SearchBar } from './SearchBar';
 
 const ErrorText = styled.p`
   color: red;
@@ -14,56 +18,38 @@ const LoadingText = styled.p`
   color: blue;
 `;
 
-const SearchBar = () => {
-  const { searchTerm = '' } = useParams<{ searchTerm: string }>();
-  const [searchText, setSearchText] = useState(searchTerm);
-  const navigate = useNavigate();
-
-  const handleSearch = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchText(event.target.value);
-    },
-    [setSearchText],
-  );
-
-  const handleSearchSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      navigate(`/search/${searchText}`);
-    },
-    [navigate, searchText],
-  );
-
-  return (
-    <form onSubmit={handleSearchSubmit}>
-      <input
-        type="text"
-        value={searchText}
-        onChange={handleSearch}
-        placeholder="Search movies..."
-      />
-      <button type="submit">Search</button>
-    </form>
-  );
-};
+const NotFound = styled.p`
+  font-size: 1.5em;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+`;
 
 export const EmptyMovieList = () => {
   return (
     <div>
-      <SearchBar />
+      <SearchBar searchTerm={null} year={null} type={null} />
       <p>Search for a movie</p>
     </div>
   );
 };
 
 export const MovieList = () => {
-  const { searchTerm = '' } = useParams<{ searchTerm: string }>();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const searchTerm = searchParams.get('s');
+  const year = searchParams.get('y');
+  const type = searchParams.get('type');
 
-  const { data, error } = useMovieSearch(searchTerm);
+  const { data, error } = useMovieSearch(
+    searchTerm ?? '',
+    year ?? '',
+    isMovieType(type) ? type : MovieType.All,
+  );
 
   return (
     <div>
-      <SearchBar />
+      <SearchBar searchTerm={searchTerm} year={year} type={type} />
       {error && <ErrorText>There is an error.</ErrorText>}
       {!data && <LoadingText>Loading...</LoadingText>}
       {data && data.Response == 'True' && (
@@ -72,6 +58,9 @@ export const MovieList = () => {
             <MovieCard key={movie.imdbID} movie={movie} />
           ))}
         </Container>
+      )}
+      {data && data.Response == 'False' && (
+        <NotFound data-testid="nothing-found">No movies found</NotFound>
       )}
     </div>
   );

@@ -48,6 +48,28 @@ const MoviePoster = styled.img`
   height: auto;
 `;
 
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+`;
+
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  p {
+    margin: 0;
+  }
+`;
+
 export function MovieDetails() {
   const { imdbID } = useParams<{ imdbID: string }>();
   const { data, error } = useMovieDetails(imdbID || '');
@@ -61,8 +83,26 @@ export function MovieDetails() {
       <BackButton onClick={() => navigate(-1)}>Back</BackButton>
       <MovieTitle>{data.Title}</MovieTitle>
       <MovieYear>{data.Year}</MovieYear>
-      <MoviePlot>{data.Plot}</MoviePlot>
-      <MoviePoster src={data.Poster} alt={data.Title} />
+      <ContentContainer>
+        <MoviePoster src={data.Poster} alt={data.Title} />
+        <InfoContainer>
+          <MoviePlot>{data.Plot}</MoviePlot>
+          <p>Rated: {data.Rated}</p>
+          <p>Released: {data.Released}</p>
+          <p>Runtime: {data.Runtime}</p>
+          <p>Genre: {data.Genre}</p>
+          <p>Director: {data.Director}</p>
+          <p>Writer: {data.Writer}</p>
+          <p>Actors: {data.Actors}</p>
+          <p>Language: {data.Language}</p>
+          <p>Country: {data.Country}</p>
+          <p>Awards: {data.Awards}</p>
+          <p>IMDb Rating: {data.imdbRating}</p>
+          <p>IMDb Votes: {data.imdbVotes}</p>
+          <p>Type: {data.Type}</p>
+          {data.totalSeasons && <p>Total Seasons: {data.totalSeasons}</p>}
+        </InfoContainer>
+      </ContentContainer>
     </DetailsContainer>
   );
 }

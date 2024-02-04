@@ -8,7 +8,7 @@ export function App() {
     <Router>
       <Routes>
         <Route path="/" element={<EmptyMovieList />} />
-        <Route path="/search/:searchTerm?" element={<MovieList />} />
+        <Route path="/search" element={<MovieList />} />
         <Route path="/:imdbID" element={<MovieDetails />} />
       </Routes>
     </Router>

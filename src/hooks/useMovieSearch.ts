@@ -17,16 +17,42 @@ interface SearchResultSuccess {
 
 type SearchResult = SearchResultSuccess | SearchResultError;
 
-export function useMovieSearch(movieTitle: string) {
+export enum MovieType {
+  All = '',
+  Movie = 'movie',
+  Series = 'series',
+  Episode = 'episode',
+}
+
+export function isMovieType(type: string | null): type is MovieType {
+  return Object.values(MovieType).includes(type as MovieType);
+}
+
+export function useMovieSearch(
+  movieTitle: string,
+  year: string,
+  type: MovieType,
+) {
+  const params: Record<string, string> = {
+    s: movieTitle,
+    y: year,
+    type,
+  };
+
   const { data, error } = useFetch<SearchResult>(
-    `${baseUrl}s=${encodeURIComponent(movieTitle)}`,
+    `${baseUrl}${new URLSearchParams(params).toString()}`,
   );
   return { data, error };
 }
 
 export function useMovieDetails(imdbID: string) {
+  const params: Record<string, string> = {
+    i: imdbID,
+    plot: 'full',
+  };
+
   const { data, error } = useFetch<Movie>(
-    `${baseUrl}i=${encodeURIComponent(imdbID)}`,
+    `${baseUrl}${new URLSearchParams(params).toString()}`,
   );
   return { data, error };
 }
