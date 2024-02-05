@@ -6,18 +6,27 @@ const SearchForm = styled.form`
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin: 60px 0 20px 0;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: center;
+  }
 `;
 
 const SearchInput = styled.input`
-  width: 200px;
+  width: 80%;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  @media (min-width: 768px) {
+    width: 200px;
+  }
 `;
 
 const YearInput = styled(SearchInput)`
-  width: 100px;
+  max-width: 100px;
 `;
 
 const TypeSelect = styled.select`
@@ -30,12 +39,12 @@ const SearchButton = styled.button`
   padding: 5px 10px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
-  color: white;
+  background-color: #10a5e9;
+  color: #fafdfe;
   cursor: pointer;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #39bdf8;
   }
 `;
 

@@ -11,25 +11,31 @@ import { MovieCard } from '../MovieCard';
 import { SearchBar } from './SearchBar';
 
 const ErrorText = styled.p`
-  color: red;
+  color: #e50914;
 `;
 
 const LoadingText = styled.p`
-  color: blue;
+  color: #f5f5f5;
 `;
 
 const NotFound = styled.p`
   font-size: 1.5em;
   text-align: center;
   font-weight: bold;
-  color: #333;
+  color: #cbd5e1;
+`;
+
+const StyledText = styled.p`
+  text-align: center;
+  color: #cbd5e1;
+  font-size: 1.5em;
 `;
 
 export const EmptyMovieList = () => {
   return (
     <div>
       <SearchBar searchTerm={null} year={null} type={null} />
-      <p>Search for a movie</p>
+      <StyledText>Search for a movie</StyledText>
     </div>
   );
 };

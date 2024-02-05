@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 import { useMovieDetails } from '../hooks/useMovieSearch';
 
 const ErrorText = styled.p`
-  color: red;
+  color: #e50914;
 `;
 
 const LoadingText = styled.p`
-  color: blue;
+  color: #f5f5f5;
 `;
 
 const DetailsContainer = styled.div`
@@ -18,6 +18,8 @@ const DetailsContainer = styled.div`
   background-color: #f5f5f5;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #cbd5e1;
+  background: #0c1121;
 `;
 
 const BackButton = styled.button`
@@ -25,9 +27,13 @@ const BackButton = styled.button`
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
-  color: white;
+  background-color: #10a5e9;
+  color: #fafdfe;
   cursor: pointer;
+
+  &:hover {
+    background-color: #39bdf8;
+  }
 `;
 
 const MovieTitle = styled.h1`
@@ -46,6 +52,7 @@ const MoviePlot = styled.p`
 const MoviePoster = styled.img`
   max-width: 100%;
   height: auto;
+  border-radius: 5px;
 `;
 
 const ContentContainer = styled.div`
@@ -80,7 +87,6 @@ export function MovieDetails() {
 
   return (
     <DetailsContainer>
-      <BackButton onClick={() => navigate(-1)}>Back</BackButton>
       <MovieTitle>{data.Title}</MovieTitle>
       <MovieYear>{data.Year}</MovieYear>
       <ContentContainer>
@@ -103,6 +109,7 @@ export function MovieDetails() {
           {data.totalSeasons && <p>Total Seasons: {data.totalSeasons}</p>}
         </InfoContainer>
       </ContentContainer>
+      <BackButton onClick={() => navigate(-1)}>Back</BackButton>
     </DetailsContainer>
   );
 }
